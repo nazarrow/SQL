@@ -64,3 +64,40 @@ SELECT * FROM Customers WHERE PostalCode IS NULL;
 ```sql
 SELECT * FROM Customers WHERE PostalCode IS NOT NULL;
 ```
+## _SQL UPDATE_
+### 1. Update the `City` column of all records in the `Customers` table.
+```sql
+UPDATE Customers SET City = 'Oslo';
+```
+### 2. Set the value of the `City` columns to 'Oslo', but only the ones where the `Country` column has the value "Norway".
+```sql
+UPDATE Customers SET City = 'Oslo' WHERE Country = 'Norway';
+```
+### 3. Update the `City` value and the `Country` value.
+```sql
+UPDATE Customers SET City = 'Oslo', COUNTRY = 'Norway' WHERE CustomerID = 32;
+```
+## _SQL DELETE_
+### 1. Delete all the records from the `Customers` table where the `Country` value is 'Norway'.
+```sql
+DELETE FROM Customers WHERE Country = 'Norway';
+```
+### 2. Delete all the records from the `Customers` table.
+```sql
+DELETE FROM Customers;
+```
+## _SQL FUNCTIONS_
+### 1. Use the `MIN` function to select the record with the smallest value of the `Price` column.
+```sql
+SELECT MIN(Price) FROM Products;
+```
+### 2. Use an SQL function to select the record with the highest value of the `Price` column.
+```sql
+SELECT MAX(Price) FROM Products;
+```
+### 3. Use the correct function to return the number of records that have the `Price` value set to `18`.
+```sql
+SELECT COUNT(*) FROM Products WHERE Price = 18;
+```
+### 4. Use an SQL function to calculate the average price of all products.
+```sql
