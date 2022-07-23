@@ -39,5 +39,28 @@ SELECT * FROM Customers WHERE City = 'Berlin' OR City = 'LONDON';
 ## _SQL ORDER BY_
 1. Select all records from the `Customers` table, sort the result alphabetically by the column `City`.
 ```sql
-
+SELECT * FROM Customers ORDER BY City;
+```
+2. Select all records from the `Customers` table, sort the result *reversed* alphabetically by the column `City`.
+```sql
+SELECT * FROM Customers ORDER BY City DESC;
+```
+3. Select all records from the `Customers` table, sort the result alphabetically, first by the column `Country`, then, by the column `City`.
+```sql
+SELECT * FROM Customers ORDER BY Country, City;
+```
+## _SQL INSERT_
+### 1. Insert a new record in the `Customers` table.
+```sql
+INSERT INTO Customers (CustomerName, Address, City, PostalCode, Country)
+VALUES ('Hekkan Burger', 'Gateveien 15', 'Sandnes', '4306', 'Norway');
+```
+## _SQL NULL_
+### 1. Select all records from the `Customers` where the `PostalCode` column is empty.
+```sql
+SELECT * FROM Customers WHERE PostalCode IS NULL;
+```
+### 2. Select all records from the `Customers` where the `PostalCode` column is NOT empty.
+```sql
+SELECT * FROM Customers WHERE PostalCode IS NOT NULL;
 ```
