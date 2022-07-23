@@ -99,5 +99,82 @@ SELECT MAX(Price) FROM Products;
 ```sql
 SELECT COUNT(*) FROM Products WHERE Price = 18;
 ```
-### 4. Use an SQL function to calculate the average price of all products.
+### 4. Use an SQL function to calculate the average `price` of all `products`.
 ```sql
+SELECT AVG(Price) FROM Products;
+```
+### 5. Use an SQL function to calculate the sum of all the `Price` column values in the `Products` table.
+```sql
+SELECT SUM(Price) FROM Products;
+```
+## _SQL LIKE_
+### 1. Select all records where the value of the `City` column starts with the letter "a".
+```sql
+SELECT * FROM Customers WHERE City LIKE 'a%';
+```
+### 2. Select all records where the value of the `City` column *ends* with the letter "a"
+```sql
+SELECT * FROM Customers WHERE City LIKE '%a';
+```
+### 3. Select all records where the value of the `City` column contains the letter "a.
+```sql
+SELECT * FROM Customers WHERE City LIKE '%a%';
+```
+### 4. Select all records where the value of the `City` column starts with letter "a" and ends with the letter "b".
+```sql
+SELECT * FROM Customers WHERE City LIKE 'a%b';
+```
+### 5. Select all records where the value of the `City` column does NOT start with the letter "a".
+```sql
+SELECT * FROM Customers WHERE City NOT LIKE 'a%';
+```
+## _SQL WILDCARDS_
+### 1. Select all records where the *second* letter of the `City` is an "a".
+```sql
+SELECT * FROM Customers WHERE City LIKE '_a%';
+```
+### 2. Select all records where the first letter of the `City` is an "a" or a "c" or an "s".
+```sql
+SELECT * FROM Customers WHERE City LIKE '[acs]%';
+```
+### 3. Select all records where the first letter of the `City` starts with anything from an "a" to an "f".
+```sql
+SELECT * FROM Customers WHERE City LIKE '[a-f]%';
+```
+### 4. Select all records where the first letter of the `City` is NOT an "a" or a "c" or an "f".
+```sql
+SELECT * FROM Customers WHERE City LIKE '[!acf]';
+```
+## _SQL IN_
+### 1. Use the `IN` operator to select all the records where `Country` is either "Norway" or "France".
+```sql
+SELECT * FROM Customers WHERE Country IN ('NORWAY', 'France');
+```
+### 2. Use the IN operator to select all the records where `Country` is NOT "Norway" and NOT "France".
+```sql
+SELECT * FROM Customers WHERE Country NOT IN ('NORWAY', 'France');
+```
+## _SQL BETWEEN_
+### 1. Use the `BETWEEN` operator to select all the records where the value of the `Price` column is between 10 and 20.
+```sql
+SELECT * FROM Products WHERE Price BETWEEN 10 AND 20;
+```
+### 2. Use the `BETWEEN` operator to select all the records where the value of the `Price` column is NOT between 10 and 20.
+```sql
+SELECT * FROM Products WHERE Price NOT BETWEEN 10 AND 20;
+```
+### 3. Use the `BETWEEN` operator to select all the records where the value of the `ProductName` column is alphabetically between 'Geitost' and 'Pavlova'.
+```sql
+SELECT * FROM Products WHERE ProductName BETWEEN 'Geitost' AND 'Pavlova';
+```
+## _SQL ALIAS_
+### 1. When displaying the `Customers` table, make an ALIAS of the `PostalCode` column, the column should be called `Pno` instead.
+```sql
+SELECT CustomerName, Address, PostalCode AS pno FROM Customers;
+```
+### 2. When displaying the `Customers` table, refer to the table as `Consumers` instead of `Customers`.
+```sql
+SELECT * FROM Customers AS Consumers;
+```
+## _SQL JOIN_
+### 1. 
