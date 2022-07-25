@@ -15,3 +15,15 @@
 ```sql
 select model, speed, hd FROM PC where price < 500;
 ```
+### Задание 2: Найдите производителей принтеров. Вывести: maker
+```sql
+SELECT DISTINCT maker FROM Product WHERE type = 'printer';
+```
+### Задание 3: Найдите номер модели, объем памяти и размеры экранов ПК-блокнотов, цена которых превышает 1000 дол.
+```sql
+SELECT model, ram, screen FROM Laptop WHERE price > 1000;
+```
+### Задание 4: Найдите все записи таблицы Printer для цветных принтеров.
+```sql
+SELECT * FROM Printer WHERE color='y';
+```
