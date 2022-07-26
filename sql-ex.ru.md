@@ -27,3 +27,7 @@ SELECT model, ram, screen FROM Laptop WHERE price > 1000;
 ```sql
 SELECT * FROM Printer WHERE color='y';
 ```
+### Задание 5: Найдите номер модели, скорость и размер жесткого диска ПК, имеющих 12x или 24x CD и цену менее 600 дол.
+```sql
+SELECT model, speed, hd FROM PC WHERE cd = '12x' AND price < 600 OR cd = '24x' AND price < 600
+```
