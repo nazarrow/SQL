@@ -29,5 +29,25 @@ SELECT * FROM Printer WHERE color='y';
 ```
 ### Задание 5: Найдите номер модели, скорость и размер жесткого диска ПК, имеющих 12x или 24x CD и цену менее 600 дол.
 ```sql
-SELECT model, speed, hd FROM PC WHERE cd = '12x' AND price < 600 OR cd = '24x' AND price < 600
+SELECT model, speed, hd FROM PC WHERE cd = '12x' AND price < 600 OR cd = '24x' AND price < 600;
+```
+### Задание 6: Для каждого производителя, выпускающего ПК-блокноты c объёмом жесткого диска не менее 10 Гбайт, найти скорости таких ПК-блокнотов. Вывод: производитель, скорость.
+```sql
+SELECT DISTINCT maker, speed FROM Laptop JOIN Product ON Laptop.model = Product.model WHERE hd>=10;
+```
+### Задание 7: Найдите номера моделей и цены всех имеющихся в продаже продуктов (любого типа) производителя B (латинская буква).
+```sql
+SELECT PC.model, PC.price FROM PC JOIN Product ON PC.model = Product.model WHERE Product.maker = 'B';
+UNION
+SELECT Laptop.model, Laptop.price FROM Laptop JOIN Product ON Laptop.model = Product.model WHERE Product.maker = 'B';
+UNION
+SELECT Printer.model, Printer.price FROM Printer JOIN Product ON Printer.model = Product.model WHERE Product.maker = 'B';
+```
+### Задание 8: Найдите производителя, выпускающего ПК, но не ПК-блокноты.
+```sql
+SELECT maker FROM Product WHERE type = 'PC' AND maker NOT IN (SELECT maker FROM Product WHERE type = 'Laptop') GROUP BY maker;
+```
+### Задание 9: Найдите производителей ПК с процессором не менее 450 Мгц. Вывести: Maker
+```sql
+SELECT DISTINCT maker FROM Product RIGHT JOIN PC ON Product.model = PC.model WHERE PC.speed >= 450;
 ```
