@@ -51,3 +51,7 @@ SELECT maker FROM Product WHERE type = 'PC' AND maker NOT IN (SELECT maker FROM 
 ```sql
 SELECT DISTINCT maker FROM Product RIGHT JOIN PC ON Product.model = PC.model WHERE PC.speed >= 450;
 ```
+### Задание 10: Найдите модели принтеров, имеющих самую высокую цену. Вывести: model, price
+```sql
+SELECT model, price FROM Printer WHERE price = (SELECT MAX(price) FROM Printer);
+```
