@@ -55,3 +55,19 @@ SELECT DISTINCT maker FROM Product RIGHT JOIN PC ON Product.model = PC.model WHE
 ```sql
 SELECT model, price FROM Printer WHERE price = (SELECT MAX(price) FROM Printer);
 ```
+### Задание 11: Найдите среднюю скорость ПК.
+```sql
+SELECT AVG (speed) FROM PC;
+```
+### Задание 12: Найдите среднюю скорость ПК-блокнотов, цена которых превышает 1000 дол.
+```sql
+SELECT AVG (speed) FROM Laptop WHERE price > 1000;
+```
+### Задание 13: Найдите среднюю скорость ПК, выпущенных производителем A.
+```sql
+SELECT AVG (speed) FROM PC WHERE model IN (SELECT model FROM Product WHERE maker = 'A');
+```
+### Задание 15: Найдите размеры жестких дисков, совпадающих у двух и более PC. Вывести: HD
+```sql
+
+```
