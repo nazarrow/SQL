@@ -69,5 +69,14 @@ SELECT AVG (speed) FROM PC WHERE model IN (SELECT model FROM Product WHERE maker
 ```
 ### Задание 15: Найдите размеры жестких дисков, совпадающих у двух и более PC. Вывести: HD
 ```sql
+SELECT hd FROM PC GROUP BY hd HAVING COUNT(model) >= 2;
+```
+### Задание 16: Найдите пары моделей PC, имеющих одинаковые скорость и RAM. В результате каждая пара указывается только один раз, т.е. (i,j), но не (j,i), Порядок вывода: модель с большим номером, модель с меньшим номером, скорость и RAM.
+```sql
+SELECT DISTINCT A.model, B.model, A.speed, A.ram FROM PC A, PC B WHERE A.speed = B.speed AND A.ram = B.ram AND A.model > B.model;
+```
+### Задание 17: Найдите модели ПК-блокнотов, скорость которых меньше скорости каждого из ПК.
+Вывести: type, model, speed
+```sql
 
 ```
