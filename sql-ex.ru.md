@@ -78,5 +78,18 @@ SELECT DISTINCT A.model, B.model, A.speed, A.ram FROM PC A, PC B WHERE A.speed =
 ### Задание 17: Найдите модели ПК-блокнотов, скорость которых меньше скорости каждого из ПК.
 Вывести: type, model, speed
 ```sql
-
+SELECT DISTINCT type, Laptop.model, speed FROM Laptop JOIN Product ON Laptop.model = Product.model WHERE speed < (SELECT MIN (speed) FROM PC);
+```
+### Задание 18: Найдите производителей самых дешевых цветных принтеров. Вывести: maker, price
+```sql
+SELECT DISTINCT maker, price FROM Product JOIN Printer ON Product.model = Printer.model WHERE color = 'y' AND price = (SELECT MIN (price) FROM Printer WHERE color = 'y');
+```
+### Задание 19: Для каждого производителя, имеющего модели в таблице Laptop, найдите средний размер экрана выпускаемых им ПК-блокнотов.
+Вывести: maker, средний размер экрана.
+```sql
+SELECT DISTINCT maker, AVG (screen) AS screen_1 FROM Product JOIN Laptop ON Product.model = Laptop.model GROUP BY maker;
+```
+### Задание 20: Найдите производителей, выпускающих по меньшей мере три различных модели ПК. Вывести: Maker, число моделей ПК.
+```sql
+SELECT DISTINCT maker, COUNT (model) AS model_1 FROM Product WHERE type = 'PC' GROUP BY maker HAVING COUNT (model) >= 3;
 ```
