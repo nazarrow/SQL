@@ -3703,3 +3703,148 @@ ORDER BY
 | 4      | Баранов Павел  | 480.50    |
 
 ┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉
+
+❓*Задание 6. Вывести номера заказов (buy_id) и названия этапов,  на которых они в данный момент находятся. Если заказ доставлен –  информацию о нем не выводить. Информацию отсортировать по возрастанию buy_id.* 
+
+*Фрагмент логической схемы базы данных:*
+
+![](https://ucarecdn.com/0178ea29-ab37-4ce9-83ac-bd49d2636c20/)
+
+✅ `Решение` ⤵️
+
+```sql
+SELECT 
+  buy_id, 
+  name_step 
+FROM 
+  buy_step 
+  INNER JOIN step ON buy_step.step_id = step.step_id 
+WHERE 
+  date_step_beg IS NOT NULL 
+  AND date_step_end IS NULL 
+ORDER BY 
+  buy_id, 
+  name_step;
+```
+🔎 `РЕЗУЛЬТАТ` ⤵️
+
+| buy_id | name_step       |
+|:---------------:|:---------------:|
+| 2      | Транспортировка |
+| 3      | Доставка        |
+| 4      | Оплата          |
+
+┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉
+
+❓*Задание 7. В таблице city для каждого города указано количество дней, за которые заказ может быть доставлен в этот город (рассматривается только этап Транспортировка). Для тех заказов, которые прошли этап транспортировки, вывести количество дней за которое заказ реально доставлен в город. А также, если заказ доставлен с опозданием, указать количество дней задержки, в противном случае вывести 0. В результат включить номер заказа (buy_id), а также вычисляемые столбцы Количество_дней и Опоздание. Информацию вывести в отсортированном по номеру заказа виде.* 
+
+*Фрагмент логической схемы базы данных:*
+
+![](https://ucarecdn.com/6b3c2d87-7353-48e6-adfd-26c338886f4a/)
+
+✅ `Решение` ⤵️
+
+```sql
+SELECT 
+  buy_step.buy_id, 
+  DATEDIFF(date_step_end, date_step_beg) AS Количество_дней, 
+  IF(
+    DATEDIFF(date_step_end, date_step_beg) > city.days_delivery, 
+    DATEDIFF(date_step_end, date_step_beg) - city.days_delivery, 
+    0
+  ) AS Опоздание 
+FROM 
+  buy_step 
+  INNER JOIN step ON buy_step.step_id = step.step_id 
+  INNER JOIN buy ON buy_step.buy_id = buy.buy_id 
+  INNER JOIN client ON buy.client_id = client.client_id 
+  INNER JOIN city ON client.city_id = city.city_id 
+WHERE 
+  buy_step.step_id = 3 
+  AND date_step_end IS NOT NULL 
+ORDER BY 
+  buy_id;
+```
+🔎 `РЕЗУЛЬТАТ` ⤵️
+
+| buy_id | Количество_дней | Опоздание |
+|:---------------:|:---------------:|:---------------:|
+| 1      | 14              | 2         |
+| 3      | 4               | 0         |
+
+┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉
+
+❓*Задание 8. Выбрать всех клиентов, которые заказывали книги Достоевского, информацию вывести в отсортированном по алфавиту виде. В решении используйте фамилию автора, а не его id.* 
+
+*Фрагмент логической схемы базы данных:*
+
+![](https://ucarecdn.com/81b4c54e-bfb0-4582-9df9-279b6be0154e/)
+
+✅ `Решение` ⤵️
+
+```sql
+SELECT 
+  DISTINCT name_client 
+FROM 
+  client 
+  INNER JOIN buy USING(client_id) 
+  INNER JOIN buy_book USING(buy_id) 
+  INNER JOIN book USING(book_id) 
+  INNER JOIN author USING(author_id) 
+WHERE 
+  author.name_author = 'Достоевский Ф.М.' 
+ORDER BY 
+  name_client;
+```
+🔎 `РЕЗУЛЬТАТ` ⤵️
+
+| name_client   |
+|:---------------:|
+| Абрамова Катя |
+| Баранов Павел |
+
+┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉
+
+❓*Задание 9. Вывести жанр (или жанры), в котором было заказано больше всего экземпляров книг, указать это количество. Последний столбец назвать Количество.* 
+
+*Фрагмент логической схемы базы данных:*
+
+![](https://ucarecdn.com/710494ce-e3a3-4d4b-8f10-5ab41b474b31/)
+
+✅ `Решение` ⤵️
+
+```sql
+SELECT 
+  name_genre, 
+  SUM(buy_book.amount) AS Количество 
+FROM 
+  genre 
+  INNER JOIN book USING(genre_id) 
+  INNER JOIN buy_book USING(book_id) 
+GROUP BY 
+  1 
+HAVING 
+  Количество = (
+    SELECT 
+      MAX(sum_amount) AS max_sum_amount 
+    FROM 
+      (
+        SELECT 
+          name_genre, 
+          SUM(buy_book.amount) AS sum_amount 
+        FROM 
+          genre 
+          INNER JOIN book ON genre.genre_id = book.genre_id 
+          INNER JOIN buy_book ON book.book_id = buy_book.book_id 
+        GROUP BY 
+          name_genre
+      ) AS query_in
+  );
+```
+🔎 `РЕЗУЛЬТАТ` ⤵️
+
+| name_genre | Количество |
+|:---------------:|:---------------:|
+| Роман      | 7          |
+
+┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉
