@@ -6317,7 +6317,22 @@ ORDER BY
 ✔`РЕШЕНИЕ` ⤵️
 
 ```sql
-
+SELECT 
+  name_subject, 
+  COUNT(enrollee_id) AS Количество, 
+  MAX(result) AS Максимум, 
+  MIN(result) AS Минимум, 
+  ROUND(
+    AVG(result), 
+    1
+  ) AS Среднее 
+FROM 
+  subject 
+  JOIN enrollee_subject USING(subject_id) 
+GROUP BY 
+  1 
+ORDER BY 
+  1;
 ```
 
 🔎 `РЕЗУЛЬТАТ` ⤵️
@@ -6370,7 +6385,17 @@ ORDER BY
 ✔`РЕШЕНИЕ` ⤵️
 
 ```sql
-
+SELECT 
+  name_program 
+FROM 
+  program 
+  JOIN program_subject USING(program_id) 
+GROUP BY 
+  1 
+HAVING 
+  MIN(min_result) >= 40 
+ORDER BY 
+  1;
 ```
 
 🔎 `РЕЗУЛЬТАТ` ⤵️
@@ -6404,7 +6429,18 @@ ORDER BY
 ✔`РЕШЕНИЕ` ⤵️
 
 ```sql
-
+SELECT 
+  name_program, 
+  plan 
+FROM 
+  program 
+WHERE 
+  plan = (
+    SELECT 
+      MAX(plan) 
+    FROM 
+      program
+  );
 ```
 
 🔎 `РЕЗУЛЬТАТ` ⤵️
@@ -6459,7 +6495,19 @@ ORDER BY
 ✔`РЕШЕНИЕ` ⤵️
 
 ```sql
-
+SELECT 
+  name_enrollee, 
+  SUM(
+    IF(bonus IS NULL, 0, bonus)
+  ) AS Бонус 
+FROM 
+  enrollee 
+  LEFT JOIN enrollee_achievement USING(enrollee_id) 
+  LEFT JOIN achievement USING(achievement_id) 
+GROUP BY 
+  1 
+ORDER BY 
+  1;
 ```
 
 🔎 `РЕЗУЛЬТАТ` ⤵️
@@ -6523,7 +6571,27 @@ ORDER BY
 ✔`РЕШЕНИЕ` ⤵️
 
 ```sql
-
+SELECT 
+  name_department, 
+  name_program, 
+  plan, 
+  COUNT(enrollee_id) AS Количество, 
+  ROUND(
+    (
+      COUNT(enrollee_id) / plan
+    ), 
+    2
+  ) AS Конкурс 
+FROM 
+  department 
+  JOIN program USING(department_id) 
+  JOIN program_enrollee USING(program_id) 
+GROUP BY 
+  1, 
+  2, 
+  3 
+ORDER BY 
+  5 DESC;
 ```
 
 🔎 `РЕЗУЛЬТАТ` ⤵️
@@ -6668,7 +6736,22 @@ ORDER BY
 ✔`РЕШЕНИЕ` ⤵️
 
 ```sql
-
+SELECT 
+  name_program 
+FROM 
+  program 
+  JOIN program_subject USING(program_id) 
+  JOIN subject USING(subject_id) 
+WHERE 
+  name_subject IN(
+    'Информатика', 'Математика'
+  ) 
+GROUP BY 
+  1 
+HAVING 
+  COUNT(name_program) = 2 
+ORDER BY 
+  1;
 ```
 
 🔎 `РЕЗУЛЬТАТ` ⤵️
@@ -6811,7 +6894,22 @@ ORDER BY
 ✔`РЕШЕНИЕ` ⤵️
 
 ```sql
-
+SELECT 
+  name_program, 
+  name_enrollee, 
+  SUM(result) AS itog 
+FROM 
+  program_enrollee 
+  JOIN enrollee_subject USING(enrollee_id) 
+  JOIN program_subject USING(program_id, subject_id) 
+  JOIN enrollee USING(enrollee_id) 
+  JOIN program USING(program_id) 
+GROUP BY 
+  name_program, 
+  name_enrollee 
+ORDER BY 
+  1, 
+  3 DESC;
 ```
 
 🔎 `РЕЗУЛЬТАТ` ⤵️
@@ -6975,7 +7073,24 @@ INSERT INTO enrollee_subject (enrollee_id, subject_id, result) VALUES (2, 3, 41)
 ✔`РЕШЕНИЕ` ⤵️
 
 ```sql
-
+SELECT 
+  name_program, 
+  name_enrollee 
+FROM 
+  enrollee 
+  JOIN program_enrollee USING(enrollee_id) 
+  JOIN program USING(program_id) 
+  JOIN program_subject USING(program_id) 
+  JOIN subject USING(subject_id) 
+  JOIN enrollee_subject USING(subject_id, enrollee_id) 
+WHERE 
+  result < min_result 
+GROUP BY 
+  1, 
+  2 
+ORDER BY 
+  1, 
+  2;
 ```
 
 🔎 `РЕЗУЛЬТАТ` ⤵️
@@ -6989,7 +7104,40 @@ INSERT INTO enrollee_subject (enrollee_id, subject_id, result) VALUES (2, 3, 41)
 
 ### <a name="ThreeFour"></a> 3.4 База данных «Абитуриент», запросы корректировки
 
+✳ Шаг 2. 
 
+❓*Задание. Создать вспомогательную таблицу applicant,  куда включить id образовательной программы, id абитуриента, сумму баллов абитуриентов (столбец itog) в отсортированном сначала по id образовательной программы, а потом по убыванию суммы баллов виде (использовать запрос из предыдущего урока).*
+
+*Фрагмент логической схемы базы данных:*
+
+![](https://ucarecdn.com/f80c65d2-82b4-4ae7-8036-3181302256ee/)
+
+✔`РЕШЕНИЕ` ⤵️
+
+```sql
+
+```
+
+🔎 `РЕЗУЛЬТАТ` ⤵️
+
+| program_id | enrollee_id | itog |
+|:---------------:|:---------------:|:---------------:|
+| 1          | 3           | 230  |
+| 1          | 2           | 226  |
+| 1          | 1           | 213  |
+| 2          | 6           | 276  |
+| 2          | 3           | 230  |
+| 2          | 2           | 226  |
+| 3          | 6           | 270  |
+| 3          | 4           | 238  |
+| 3          | 5           | 192  |
+| 3          | 1           | 179  |
+| 4          | 6           | 270  |
+| 4          | 3           | 242  |
+| 4          | 5           | 192  |
+| 4          | 1           | 179  |
+
+┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉┉
 
 
 
